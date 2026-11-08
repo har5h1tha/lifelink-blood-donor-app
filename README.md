@@ -45,10 +45,10 @@ lib/
 ## Team
 | Name | Role |
 |---|---|
-| ________ | Authentication and Profile |
-| ________ | Find Donors |
-| ________ | Blood Requests |
-| ________ | UI Design, Navigation and Documentation |
+| HARSHITHA D | Authentication and Profile |
+| MANYA KAMATH | Find Donors |
+| MALLIKA | Blood Requests |
+| LAVANYA | UI Design, Navigation and Documentation |
 
 ## Screenshots
-Add screenshots here after Review 1.
+yet to be added
