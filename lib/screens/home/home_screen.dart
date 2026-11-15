@@ -1,37 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../core/colors.dart';
-import '../../core/routes.dart';
-import '../../core/widgets/primary_button.dart';
-import '../../viewmodels/auth_viewmodel.dart';
 
-// STUB: Member 4 replaces this file completely (bottom navigation + tabs).
-class HomeScreen extends StatelessWidget {
+import '../../core/colors.dart';
+import '../donors/find_donors_screen.dart';
+import '../profile/profile_screen.dart';
+import '../requests/request_list_screen.dart';
+import 'home_tab.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final auth = context.watch<AuthViewModel>();
+    final List<Widget> screens = [
+      HomeTab(onFindDonors: () => _onItemTapped(1)),
+      const FindDonorsScreen(),
+      const RequestListScreen(),
+      const ProfileScreen(),
+    ];
+
     return Scaffold(
-      appBar: AppBar(title: const Text('LifeLink')),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizes.padding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Hello, ${auth.currentUser?.name ?? ''}'),
-            const SizedBox(height: AppSizes.padding),
-            PrimaryButton(
-              label: 'Logout',
-              onPressed: () async {
-                await auth.logout();
-                if (context.mounted) {
-                  Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login, (r) => false);
-                }
-              },
-            ),
-          ],
-        ),
+      body: IndexedStack(index: _selectedIndex, children: screens),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: AppColors.textSecondary,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Find Donors',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bloodtype_outlined),
+            label: 'Requests',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }
